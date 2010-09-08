@@ -8,22 +8,19 @@
 
 !SLIDE
 
-# I don't think you need me to explain the what #
+# I don't think you need me to tell you what chef is #
 
 ### [http://www.slideshare.net/adamhjk/infrastructure-automation-with-chef](http://www.slideshare.net/adamhjk/infrastructure-automation-with-chef) ###
 
 !SLIDE
 
 # Why do we use Chef?#
-
-!SLIDE
-
 ## If we do it manually, we're bound to forget something ##
 
 !SLIDE
 
 # Mostly happy puppet users #
-### Though don't get me started on stored configs ###
+### Though stored configs frequently made me sad ###
 
 !SLIDE
 
@@ -42,25 +39,31 @@
 # Then along came chef #
 ### And a chance to build a new datacenter ###
 
+
+!SLIDE 
+
+## Iowa datacenter built group up in chef ##
+## SJC has been coverted on a per cluster/host basis ##
+
 !SLIDE bullets
 
-# Some minor wins #
+# What we like about chef #
 * Implicit ordering
 * Ruby outside templates
 
 !SLIDE bullets
 
-# Some major wins #
+# What we really like #
 * Search
 * Source of truthiness
 * knife
 
 !SLIDE
 
-# Some downsides #
+# Things that drag on us #
 
 !SLIDE smaller commandline
-# Less clear error messages #
+# Less than stunning error messages #
     /usr/lib/ruby/1.8/chef/mixin/template.rb:43:in `render_template': undefined method `[]' for nil:NilClass (Chef::Mixin::Template::TemplateError)
         from /usr/lib/ruby/1.8/chef/provider/template.rb:100:in `render_with_context'
         from /usr/lib/ruby/1.8/chef/provider/template.rb:39:in `action_create'
@@ -85,18 +88,20 @@
     fi
 
 !SLIDE bullets
-        
-# Performance #
-* Only uses one core
-* http://timetobleed.com/fixing-threads-in-ruby-18-a-2-10x-performance-boost/
+# Server Performance #
+* Only uses one core in packaged config
+* Opcode and 37signals cookbooks are much better
+* [Distro packaged ruby can kill another 10-20%]( http://timetobleed.com/fixing-threads-in-ruby-18-a-2-10x-performance-boost/)
+
 
 !SLIDE
 
 # Interesting bits about our chef install
 
-!SLIDE
+!SLIDE bullets
 
 # chef-server #
+* Clustered thin behind nginx+ssl
 
 !SLIDE bullets
 
@@ -168,6 +173,5 @@
 
 # Is an attribute really what you want? #
 ### Think about visibility and versioning ##
-
 
 
