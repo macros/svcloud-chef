@@ -85,6 +85,6 @@
 * Chef
 * Ganglia
 * Nagios
-* runit
+* Vyatta
 * Racktables
 

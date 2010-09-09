@@ -42,7 +42,7 @@
 
 !SLIDE 
 
-## Iowa datacenter built group up in chef ##
+## Iowa datacenter built ground up in chef ##
 ## SJC has been coverted on a per cluster/host basis ##
 
 !SLIDE bullets
@@ -132,13 +132,45 @@
     role['POZ']
     role['LON']
 
-!SLIDE bullets
+!SLIDE 
 
 # Heavy users of search #
-* /etc/hosts
-* bind
-* ganglia
-* nagios
+
+!SLIDE 
+
+# Build /etc/hosts and bind records
+
+    @@@ ruby
+    hosts = search(:node, "*:*")
+    if hosts.size > 0
+      template "/etc/hosts" do
+        source "hosts.erb"
+        mode 0644
+        owner "root"
+        group "root"
+        variables(:hosts => hosts)
+      end
+    end
+
+!SLIDE code smaller
+# ganglia #
+    @@@ ruby
+    datacenter = node[:datacenter]
+    datasources = get_datasources(datacenter)
+    if datasources.size > 0
+      template "/etc/ganglia/gmetad.conf" do
+        source "gmetad.conf.erb"
+        variables( :datasources => datasources )
+        notifies :restart, resources(:service => 'gmetad')
+      end
+    end
+
+!SLIDE code smaller
+# nagios #
+    @@@ ruby
+    pool_apaches = search(:node, "(hostname:ap-*+OR+aliases:ap-*)+AND+datacenter:#{colo}")
+    pool_memcache = search(:node, "(hostname:memcache*+OR+aliases:memcache*)+AND+datacenter:#{colo}")
+    pool_db = search(:node, "(hostname:db-*+OR+aliases:db-*)+AND+datacenter:#{colo}")
 
 !SLIDE bullets
 
@@ -174,4 +206,16 @@
 # Is an attribute really what you want? #
 ### Think about visibility and versioning ##
 
+!SLIDE code
+
+# Avoid the line idiom
+
+    @@@ sh
+    #!/bin/sh -e
+    #
+    # rc.local
+    # By default this script does nothing.
+
+    exit 0
+    /usr/local/bin/really_important_script
 
